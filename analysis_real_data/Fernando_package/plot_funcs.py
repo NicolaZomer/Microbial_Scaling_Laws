@@ -1,0 +1,198 @@
+# Module for the functions of the various plots
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+def cumulative(array, title='Cumulative', xlabel='x axis', ylabel='y axis'):
+    fig, ax = plt.subplots(1,1,figsize=(15,10))
+    array = np.array(array)
+    array = np.sort(array)
+    array = array[~np.isnan(array)]
+    cumul = 1 - np.arange(0, len(array))/(len(array))
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.minorticks_on()
+    ax.scatter(array, cumul, s=150, edgecolor='black', alpha=0.7)
+    return fig, ax, cumul, array
+
+#Plot of the posterior distribution of simulated data
+
+def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
+            y_max=2.2, info = True):
+
+    if info:
+        print('''
+        This function as takes as a parameter argument that should be either:
+        - omega_2
+        - mu
+        - nu
+        - a
+        - b
+        - c
+        - d
+        
+        
+        
+        
+        ''')
+    if parameter == 'omega_2':
+       parameter = '$\\omega_2$'
+       index = 0
+    elif parameter == 'mu':
+        parameter = '$\\mu$'
+        index = 1
+    elif parameter == 'nu':
+        parameter = '$\\nu$'
+        index = 2
+    elif parameter == 'a':
+        index = 3
+    elif parameter == 'b':
+        index = 4
+    elif parameter == 'c':
+        index = 5
+    elif parameter == 'd':
+        index = 6
+    else:
+        return 'The parameter should be chose between [omega_2, mu, nu, a, b, c, d]'
+
+    fig, ax = plt.subplots(1,1 , figsize=(15, 10))
+    res_param = ax.hist(chain[:,index], bins='fd', edgecolor='black', alpha=0.5, density=True)
+
+    counts_param = res_param[0]
+    edges_param = res_param[1]
+    patches_param = res_param[2]
+    centers_param = (edges_param[:-1] + edges_param[1:]) / 2
+
+    tmp = np.cumsum(np.diff(edges_param)*counts_param)
+
+    max_index = np.argmax(counts_param)
+    max_param = (edges_param[max_index] + edges_param[max_index + 1])/2
+    median_param = (edges_param[len(tmp[tmp<0.5])+1] + edges_param[len(tmp[tmp<0.5])+2])/2
+    print('Median value of ', parameter,':', round(median_param, 4))
+    for i in range(len(tmp[tmp<0.025])):
+        patches_param[i].set_facecolor('green')
+    for i in range(len(tmp[tmp<0.975]), len(tmp)):
+        patches_param[i].set_facecolor('green')
+
+    ax.minorticks_on()
+    ax.set_ylabel('Counts', fontsize=15)
+    ax.set_xlabel(parameter, fontsize=15)
+    ax.set_title(parameter + ' posterior', fontsize=20)
+    ax.axvline(median_param, color='crimson', linestyle='dashed',  linewidth=3, label='median '+parameter + ' = ' + str(round(median_param, 4)))
+    ax.axvline(max_param, color='darkgreen', linestyle='dashed',  linewidth=3, label='max '+ parameter + ' = ' + str(round(max_param, 4)))
+
+    ax.text(median_param+x_median, y_median, 'median '+parameter , color='crimson', fontsize=17)
+    ax.text(max_param+x_max, y_max,'max '+parameter, color='darkgreen', fontsize=17)
+
+
+    print('Max value of ', parameter,' :', round(max_param, 4))
+
+
+    ax.legend(fontsize=17, facecolor='aliceblue', shadow = True, edgecolor='black')
+
+    return fig, ax, centers_param, counts_param, max_param
+
+
+# The function to plot the chains of the sampler
+
+def chains_plot(chain, title_list = ['$\\omega_2$', '$\\mu$', '$\\nu$', 'a', 'b', 'c', 'd'], info = True):
+
+    if info:
+        print('''
+        The chain to be put in input has to be the flattened one
+        
+        ''')
+
+
+    fig , ax = plt.subplots(chain.shape[1],1, figsize=(45, 100))
+
+    for i, i_title in zip(range(len(title_list)), title_list):
+        ax[i].scatter(range(0,chain.shape[0]) , chain[:,i], s=1)
+        ax[i].set_ylabel('Value of the chain', fontsize=30)
+        ax[i].set_xlabel('Iteration Step', fontsize=30)
+        ax[i].set_title('Chain of '+i_title, fontsize=40)
+        ax[i].minorticks_on()
+        ax[i].tick_params(axis='both', which='major', labelsize=25, width=3, length=25)
+        ax[i].tick_params(axis='both', which='minor', width=3, length=10)
+
+    return fig, ax
+
+
+
+
+
+#From our beloved Amos package we copy the boxplot function
+
+def boxplot(y, colors, figsize=(15,10), linewidth=2, color_median='black', linewidth_median = 3, size_props = 12, title = 'boxplot', font_title = 20, xlabel='x_axis', x_font=15, ylabel='y_axis', y_font=15, labels=False, list_labels=[] ):
+    
+    fig, ax = plt.subplots(1,1,figsize=figsize)
+    
+    bp = ax.boxplot(y,boxprops=dict(linewidth=linewidth), patch_artist=True, medianprops=dict(color=color_median, linewidth=linewidth_median), flierprops=dict(markersize=size_props))
+    
+    
+    ax.set_title(title, fontsize=font_title)
+    
+
+    ax.set_xlabel(xlabel, fontsize=x_font)
+
+    ax.set_ylabel(ylabel, fontsize=y_font)
+
+   
+    
+
+    #Still to insert the case were y is a matrix
+    
+    for array, x_point, color in zip(y, range(1, len(y)+1), colors) :
+        tmp = np.ones([len(array),])*x_point + 0.35
+        ax.scatter(tmp, array, s=77, alpha=0.5, edgecolor='black', color=color)
+
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+   
+
+    ax.minorticks_on()
+    ax.xaxis.set_tick_params(which='minor', bottom=False , size=10)
+    ax.yaxis.set_tick_params(labelsize=14, size=10)
+
+    if labels:
+        ax.set_xticklabels(list_labels)
+           
+    
+    return fig, ax, bp
+
+
+
+
+def info_boxplot():
+    print('''
+    The boxplot function takes only one mandatory argument: y that is either a matrix-like with the series to plot as columns or an array-like of array-likes.
+    
+    Then it accepts the following key-word arguments:
+    1) y: a list of the sequences to plot
+    2) colors: a list with the colors of the boxes,
+    
+
+    3) title, xlabel and ylabel: self explanatory, we have also as far as the fontsize font_title, 
+        x_font, y_font.
+
+    4) color_median: the color of the median
+    5) linewidth_median: self explanatory
+    6) size_props: size of the outliers
+    
+    ''')
+
+
+#Time series plot
+
+def plot_evol(all_times, cell_sizes):
+    fig, ax = plt.subplots(1,1 , figsize=(25, 10))
+    ax.plot(all_times, cell_sizes, linewidth=3, color='C0')
+    ax.set_title('Cell size evolution', fontsize=25)
+    ax.set_xlabel('t', fontsize = 20)
+    ax.set_ylabel('Cell size', fontsize=20)
+    ax.minorticks_on()
+    ax.grid(alpha=0.5)
+    return fig, ax
