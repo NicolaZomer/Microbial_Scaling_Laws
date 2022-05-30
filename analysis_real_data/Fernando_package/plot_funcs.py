@@ -2,6 +2,8 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import plotly.express as px
 
 def cumulative(array, title='Cumulative', xlabel='x axis', ylabel='y axis'):
     fig, ax = plt.subplots(1,1,figsize=(15,10))
@@ -196,3 +198,52 @@ def plot_evol(all_times, cell_sizes):
     ax.minorticks_on()
     ax.grid(alpha=0.5)
     return fig, ax
+
+
+# Histograms (with equal bins) + estimation of overlap
+def overlap_hist(real_data, sim_data):
+
+    # define bins to be used for both the histograms
+    real_data_unique = np.unique(np.round(real_data, decimals=3))
+    delta_t = np.round(np.min(real_data_unique[1:]-real_data_unique[:-1]), decimals=3)
+    t_bins = np.arange(0.5*delta_t, np.max(pd.concat([real_data,sim_data])) + 1.5*delta_t, delta_t)
+
+    # plot histograms with equal bins
+    fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+    density1, _, _ = ax.hist(real_data, bins=t_bins, edgecolor='black', alpha=0.5, density=True, label='Real data')
+    density2, _, _ = ax.hist(sim_data, bins=t_bins, edgecolor='black', alpha=0.5, density=True, label='Simulated data')
+    ax.set_title('Interdivision times, $\\tau$', fontsize=20)
+    ax.legend()
+
+    # estimate 0 ≤ overlap ≤ 1
+    overlap = np.sum(np.sqrt(density1*density2)) * delta_t
+    x_text = ax.get_xlim()[0] + 0.65*(ax.get_xlim()[1]-ax.get_xlim()[0])
+    y_text = ax.get_ylim()[0] + 0.75*(ax.get_ylim()[1]-ax.get_ylim()[0])
+    ax.text(x_text, y_text, f'overlap = {np.round(overlap, decimals=4)}', fontsize=24)
+
+    return fig, ax
+
+
+    #plt.show()
+
+
+# 3D scatterplot of data (generation time, growth rate, division ratio)
+def plot_3d_interactive(df_, real_data_title=True):
+    if real_data_title: 
+        title= 'Real Data'
+    else: 
+        title= 'Simulation Results'
+
+    fig = px.scatter_3d(
+        df_, x='generationtime', y='growth_rate', z='division_ratio', 
+        opacity=0.7, title=title)
+        
+    fig.update_traces(marker_size = 3)
+    fig.update_layout(
+        scene = dict(
+            aspectmode='cube'
+        )
+    )
+
+    return fig
+    #fig.show()
