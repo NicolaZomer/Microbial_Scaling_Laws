@@ -38,6 +38,7 @@ g(x) &\equiv \omega_1(\mu+x) \\
 h(x) &\equiv \omega_2(1+x/\nu)
 \end{align}
 $$
+
 where $\omega_1$ and $\omega_2$ are frequencies, while $\mu$ and $\nu$ are sizes (tipycally measured in $\mu m$). The ratio between $\omega_1$ and $\omega_2$ is the order parameter that triggers the phase transition. The parameters $\mu$ and $\nu$ are necessary to cut off the probability distribution (in zero and for large values of $x$), which is important both for physical reasons and for making the distribution normalizable. Introducing these parameters is a mathematical trick, useful for example to prevent the cell from having a too small size, which however is difficult to justify from a biological point of view. We will then see better models, biologically speaking.
 
 ### Model 1
@@ -46,14 +47,14 @@ As in the previous model, even in this case the cell growth is governed by a sin
 Also in this case the processes considered are growth and division, governed by $g(x)$ and $h(x)$ respectively. In this model we define $g(x)$ and $h(x)$ as follows
 
 $$
-\begin{align}
+\begin{aligned}
 g(x)&= \omega_1 x \\
 h(x)&=
 \begin{cases}
     0  & , \, x<u \\
     \omega_2 \cdot \frac{x+v}{u+v} & , \, x\geq u
 \end{cases}
-\end{align}
+\end{aligned}
 $$
 
 where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower bounded by $u$.   
@@ -65,14 +66,14 @@ $$ \underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} $$
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
 
 $$
-\begin{align}
+\begin{aligned}
 g(\underline{x})&=\omega_1m\begin{pmatrix} 1\\ c\end{pmatrix} \\
 h(p)&=
     \begin{cases}
     0   & , \, p<u \\
     \omega_2 \, \frac{p+v}{u+v} & , \, p\geq u
     \end{cases}
-\end{align}
+\end{aligned}
 $$
 
 From $g(\underline{x})$ we can notice that the cell size still grows exponentially and the protein content also follows this evolution, scaled by the factor $c$. As $c$ doesn't have a real meaning, we set it to $1$. 
@@ -89,7 +90,7 @@ $$
 $$
 
 and the division process occurs in the following way
-$$ \begin{pmatrix} m \\ p\end{pmatrix} \rightarrow \begin{pmatrix} frac\cdot m \\ 0\end{pmatrix} + \begin{pmatrix} (1-frac)m \\ 0\end{pmatrix} $$
+$$ (m,  p) \rightarrow (frac\cdot m, 0) \quad , \quad ((1-frac)m, 0)$$
 where $frac$ is the division ratio.
 
 ### Bayesian Data Analysis
