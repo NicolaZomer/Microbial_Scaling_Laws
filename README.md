@@ -71,7 +71,7 @@ g(\underline{x})&=\omega_1m\cdot (1,c) \\
 h(p)&=
     \begin{cases}
     0   & , p<\mu \\
-    \omega_2 \, \frac{p+v}{u+v} & , p\geq \mu
+    \omega_2 \cdot \frac{p+v}{u+v} & , p\geq \mu
     \end{cases}
 \end{aligned}
 $$
