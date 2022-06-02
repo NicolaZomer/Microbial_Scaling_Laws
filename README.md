@@ -55,6 +55,7 @@ h(x)&=
 \end{cases}
 \end{align}
 $$
+
 where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower bounded by $u$.   
 
 ### Model 2
@@ -73,6 +74,7 @@ h(p)&=
     \end{cases}
 \end{align}
 $$
+
 From $g(\underline{x})$ we can notice that the cell size still grows exponentially and the protein content also follows this evolution, scaled by the factor $c$. As $c$ doesn't have a real meaning, we set it to $1$. 
 
 Moreover, in this model the condition under which the cell can divide is that it contains a minimum amount of a specific type of protein, which we call $u$. If $p\geq u$ the cell can divide, otherwise it cannot. Unlike model 1, we do not have any condition on the size of the cell for the division to take place and $h$ depens only on $p$.
