@@ -47,10 +47,11 @@ As in the previous model, even in this case the cell growth is governed by a sin
 Also in this case the processes considered are growth and division, governed by $g(x)$ and $h(x)$ respectively. In this model we define $g(x)$ and $h(x)$ as follows
 
 $$
-h(x)&= \begin{cases}
-    0  & , \, x<u \\
-    \omega_2 \cdot \frac{x+v}{u+v} & , \, x\geq u
-\end{cases}
+\begin{aligned}
+    g(x)&= \omega_1 x \\
+    h(x)&=  0 \text{  if  } x<u \\
+    h(x)&= \omega_2 \cdot \frac{x+v}{u+v} \text{  if  } x\geq u
+\end{aligned}
 $$
 
 where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower bounded by $u$.   
@@ -63,11 +64,9 @@ As before, the traits evolution and the cell division are governed by $g(\underl
 
 $$
 \begin{aligned}
-g(\underline{x})&=\omega_1m (1, c) \\
-h(p)&= \begin{cases}
-    0   & , \, p<u \\
-    \omega_2 \, \frac{p+v}{u+v} & , \, p\geq u
-\end{cases}
+    g(\underline{x})&=\omega_1m (1, c) \\
+    h(p)&= 0 \text{  if  } p<u \\
+    h(p)&= \omega_2 \cdot \frac{p+v}{u+v}  \text{  if  } p\geq u
 \end{aligned}
 $$
 
