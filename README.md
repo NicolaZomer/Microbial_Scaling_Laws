@@ -47,13 +47,10 @@ As in the previous model, even in this case the cell growth is governed by a sin
 Also in this case the processes considered are growth and division, governed by $g(x)$ and $h(x)$ respectively. In this model we define $g(x)$ and $h(x)$ as follows
 
 $$
-\begin{aligned}
-g(x)&= \omega_1 x \\
 h(x)&= \begin{cases}
     0  & , \, x<u \\
     \omega_2 \cdot \frac{x+v}{u+v} & , \, x\geq u
 \end{cases}
-\end{aligned}
 $$
 
 where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower bounded by $u$.   
@@ -88,7 +85,7 @@ $$
 $$
 
 and the division process occurs in the following way
-$$ (m,  p) \rightarrow (frac\cdot m, 0) \; , \; ((1-frac)\cdot m, 0)$$
+$$ (m,  p) \rightarrow (frac\cdot m, 0) + ((1-frac)\cdot m, 0)$$
 where $frac$ is the division ratio.
 
 ### Bayesian Data Analysis
