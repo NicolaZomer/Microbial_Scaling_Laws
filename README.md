@@ -11,14 +11,18 @@ In this project, we want to combine methods from _Statistical Physics_ and _Baye
 ### Growth and division processes: general model 
 In our models we consider the evolution of a single non-interacting cell, which undergoes 2 processes:
 - **growth:** the cell size $x(t)$ evolves according to the following equation
+
     $$
     \dot{x}=g(x(t)) \quad, \quad x(0)=x_b
     $$
+
     In some cases this relation can be expressed in vectorial form, where $\underline{x}$ is the vector of the traits characterizing the cell's state (see model 2). 
 - **division:** it is ruled by the _hazard rate function_ $h(x(t))$, which represents the istantaneous probability of the cell to divide. This function is related to the so called _survival function_ $s(t)$, by the relation
+
     $$
     \frac{\dot{s}(t)}{s(t)}=-h(t) \quad , \quad s(0)=1
     $$
+    
     where $s(t)$ gives the probability that the cell will survive (meaning not divide in this case) past a certain time $t$.
 
 While the growth is a deterministic process, division is a stochastic event. Since division does not always divide the cell into two equal parts, we introduce a parameter $frac$, which is treated as a stpchastic variable, such that after the division
