@@ -29,7 +29,7 @@ def h_start(t, pars):
 #Logarithm of survival function s(t) for the starting model
 
 def log_CDF_start(t, pars):
-    # omega1, xb are arrays of the same length as t
+    # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
     (omega1, omega2, mu, nu, xb) = pars
 
     ln_s_ = omega2*t*(mu/nu - 1) + (omega1/omega2)*((mu + xb)/nu)*(1-np.exp(omega1*t))
@@ -61,17 +61,21 @@ def h_mod1(t, pars):
     (_, omega2, mu, nu, _) = pars
 
     h_ = omega2*((x_function_mod1(t, pars) + nu)/(mu+nu)) # if x(t) ≥ mu
+    h_ = np.reshape(h_, -1)
     h_[x_function_mod1(t, pars) < mu] = 0                 # if x(t) < mu
     
+    # h_ is a vector in all cases (with length ≥ 1)
     return h_
 
 
 
 #Logarithm of survival function s(t) for a float t for model 1
-
+# (MIGHT BE REPLACED BY THE MORE COMPACT FUNCTION BELOW)
+"""
 def log_CDF_float_mod1(t, pars):
-    # omega1, xb are arrays of the same length as t
+    # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
     (omega1, omega2, mu, nu, xb) = pars
+
 
     if (type(omega1) == np.ndarray) or (type(xb)==np.ndarray):
         t0 = (1.0/omega1) * np.log(mu/xb)
@@ -91,13 +95,14 @@ def log_CDF_float_mod1(t, pars):
         
 
     return ln_s_
-
+"""
 
 
 #Logarithm of survival function s(t) for an array t
-
+# (MIGHT BE REPLACED BY THE MORE COMPACT FUNCTION BELOW)
+"""
 def log_CDF_arr_mod1(t, pars):
-    # omega1, xb are arrays of the same length as t
+    # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
     (omega1, omega2, mu, nu, xb) = pars
 
     if type(omega1) == np.ndarray:
@@ -114,7 +119,7 @@ def log_CDF_arr_mod1(t, pars):
     ln_s_[t < t0] = 0                 # if x(t) < mu
 
     return ln_s_
-
+"""
 
 
     
@@ -122,12 +127,28 @@ def log_CDF_arr_mod1(t, pars):
 #Logarithm of survival function s(t)
 
 def log_CDF_mod1(t, pars):
-    
+    """
     if type(t) == np.ndarray: # array
         ln_s_ = log_CDF_arr_mod1(t, pars)
     else: # float
         ln_s_ = log_CDF_float_mod1(t, pars)
+    """
 
+    # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
+    (omega1, omega2, mu, nu, xb) = pars
+    t_arr = np.reshape(t, -1)
+
+    # threshold time (array)
+    t0 = (1.0/omega1) * np.log(mu/xb)
+    t0 = np.reshape(t0, -1)
+    t0[t0 < 0] = 0
+    
+
+    ln_s_ = - ( (xb/(mu+nu)) * (omega2/omega1) * (np.exp(omega1*t_arr)-np.exp(omega1*t0)) +\
+                (nu/(mu+nu)) * omega2 * (t_arr-t0) )
+    ln_s_[t_arr < t0] = 0                 # if x(t) < mu
+
+    # ln_s_ is a vector in all cases (with length ≥ 1)
     return ln_s_
 
 
@@ -156,7 +177,6 @@ def m_function(t, pars):
 def p_function(t, pars):
     (omega1, _, _, _, mb) = pars
 
-    
     p_ = (mb)*(np.exp(omega1*t) - 1)
     return p_
 
@@ -168,14 +188,17 @@ def h_mod2(t, pars):
     (_, omega2, mu, nu, _) = pars
 
     h_ = omega2*((p_function(t, pars) + nu)/(mu+nu)) # if p(t) ≥ mu
+    h_ = np.reshape(h_, -1)
     h_[p_function(t, pars) < mu] = 0                 # if p(t) < mu
     
+    # h_ is a vector in all cases (with length ≥ 1)
     return h_
 
 
 
 #Logarithm of survival function s(t) for a float t
-
+# (MIGHT BE REPLACED BY THE MORE COMPACT FUNCTION BELOW)
+"""
 def log_CDF_float_mod2(t, pars):
     # omega1, xb are arrays of the same length as t
     (omega1, omega2, mu, nu, mb) = pars
@@ -191,11 +214,12 @@ def log_CDF_float_mod2(t, pars):
         
 
     return ln_s_
-
+"""
 
 
 #Logarithm of survival function s(t) for an array t
-
+# (MIGHT BE REPLACED BY THE MORE COMPACT FUNCTION BELOW)
+"""
 def log_CDF_arr_mod2(t, pars):
     # omega1, xb are arrays of the same length as t
     (omega1, omega2, mu, nu, mb) = pars
@@ -210,18 +234,33 @@ def log_CDF_arr_mod2(t, pars):
 
 
     return ln_s_
-
+"""
 
 
 #Logarithm of survival function s(t)
 
 def log_CDF_mod2(t, pars):
-
+    """
     if type(t) == np.ndarray: # array
         ln_s_ = log_CDF_arr_mod2(t, pars)
     else: # float
         ln_s_ = log_CDF_float_mod2(t, pars)
+    """
 
+    # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
+    (omega1, omega2, mu, nu, xb) = pars
+    t_arr = np.reshape(t, -1)
+
+    # threshold time (array) always ≥ 0
+    t0 = (1.0/omega1) * np.log(1 + (mu/mb))
+    t0 = np.reshape(t0, -1)
+    
+
+    ln_s_ = - ( (mb/(mu+nu)) * (omega2/omega1) * (np.exp(omega1*t_arr)-np.exp(omega1*t0)) +\
+                ((nu-mb)/(mu+nu)) * omega2 * (t_arr-t0) )
+    ln_s_[t_arr < t0] = 0                 # if p(t) < mu
+
+    # ln_s_ is a vector in all cases (with length ≥ 1)
     return ln_s_
 
 
@@ -244,9 +283,10 @@ def PDF(t, pars, h_func, cdf_func):
    
     unnormalized = h_func(t, pars)*cdf_func(t, pars)
     unnormalized = np.array(unnormalized)
-    t = np.array(t)
-    idx = np.argsort(np.array(t))
-    normalization = np.trapz(x=t[np.array(idx)], y=unnormalized[np.array(idx)])
+    t = np.reshape(t, -1) # t = np.array(t)
+    idx = np.argsort(t) # idx = np.argsort(np.array(t))
+    normalization = np.trapz(x=t[idx], y=unnormalized[idx]) 
+    # normalization = np.trapz(x=t[np.array(idx)], y=unnormalized[np.array(idx)])
 
     return(unnormalized/normalization)
 

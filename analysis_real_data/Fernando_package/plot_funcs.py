@@ -23,7 +23,7 @@ def cumulative(array, title='Cumulative', xlabel='x axis', ylabel='y axis'):
 #Plot of the posterior distribution of simulated data
 
 def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
-            y_max=2.2, info = True):
+            y_max=2.2, info = False):
 
     if info:
         print('''
