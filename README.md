@@ -20,26 +20,25 @@ In our models we consider the evolution of a single non-interacting cell, which 
     where $s(t)$ gives the probability that the cell will survive (meaning not divide in this case) past a certain time $t$.
 
 While the growth is a deterministic process, division is a stochastic event. Since division does not always divide the cell into two equal parts, we introduce a parameter $frac$, which is treated as a stpchastic variable, such that after the division
-$$
-\underline{x}_{div} = \left(frac\cdot x, (1-frac)x\right))
-$$
+$$ \underline{x}_{div} = \left(frac\cdot x, (1-frac)x\right)) $$
 
 Finally, we assume that the division ratios $frac$ are distributed according to a Beta function and that the growth rates $\omega_1$ follow a Gamma function, hence denoting by $f$ the probability density distribution we obtain
 $$
-\begin{aligned}
+\begin{align}
 f(frac|a, b) &= Beta(a, b) \\
 f(\omega_1|c, d) &= Gamma(c, d)
-\end{aligned}
+\end{align}
 $$
 
 ### Model 0
 We start with a very simple stochastic model, biologically not very realistic, but useful to start familiarizing with the problem. In this first model we define $g(x)$ and $h(x)$ as 2 linear functions
 $$
-\begin{aligned}
+\begin{align}
 g(x) &\equiv \omega_1(\mu+x) \\
 h(x) &\equiv \omega_2(1+x/\nu)
-\end{aligned}
+\end{align}
 $$
+
 where $\omega_1$ and $\omega_2$ are frequencies, while $\mu$ and $\nu$ are sizes (tipycally measured in $\mu m$). The ratio between $\omega_1$ and $\omega_2$ is the order parameter that triggers the phase transition. The parameters $\mu$ and $\nu$ are necessary to cut off the probability distribution (in zero and for large values of $x$), which is important both for physical reasons and for making the distribution normalizable. Introducing these parameters is a mathematical trick, useful for example to prevent the cell from having a too small size, which however is difficult to justify from a biological point of view. We will then see better models, biologically speaking.
 
 ### Model 1
@@ -47,69 +46,64 @@ As in the previous model, even in this case the cell growth is governed by a sin
 
 Also in this case the processes considered are growth and division, governed by $g(x)$ and $h(x)$ respectively. In this model we define $g(x)$ and $h(x)$ as follows
 $$
-\begin{aligned}
+\begin{align}
 g(x)&= \omega_1 x \\
 h(x)&=
 \begin{cases}
     0  & , \, x<u \\
     \omega_2 \cdot \frac{x+v}{u+v} & , \, x\geq u
 \end{cases}
-\end{aligned}
+\end{align}
 $$
+
 where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower bounded by $u$.   
 
 ### Model 2
 The main difference between this model and the previous ones is that here we consider 2 traits: the cell size $m(t)$ and its protein content $p(t)$. We call $\underline{x}$ the vector
-$$
-\underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} 
-$$
+$$ \underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} $$
 
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
 $$
-\begin{aligned}
+\begin{align}
 g(\underline{x})&=\omega_1m\begin{pmatrix} 1\\ c\end{pmatrix} \\
 h(p)&=
     \begin{cases}
     0   & , \, p<u \\
     \omega_2 \, \frac{p+v}{u+v} & , \, p\geq u
     \end{cases}
-\end{aligned}
+\end{align}
 $$
+
 From $g(\underline{x})$ we can notice that the cell size still grows exponentially and the protein content also follows this evolution, scaled by the factor $c$. As $c$ doesn't have a real meaning, we set it to $1$. 
 
 Moreover, in this model the condition under which the cell can divide is that it contains a minimum amount of a specific type of protein, which we call $u$. If $p\geq u$ the cell can divide, otherwise it cannot. Unlike model 1, we do not have any condition on the size of the cell for the division to take place and $h$ depens only on $p$.
 
 The initial conditions for $m(t)$ and $p(t)$ are
 $$
-\begin{aligned}
+\begin{align}
     p(t=0) &= 0 \\
     m(t=0) &= m_b
-\end{aligned}
+\end{align}
 $$
 
 and the division process occurs in the following way
-$$
-\begin{pmatrix} m \\ p\end{pmatrix} \rightarrow \begin{pmatrix} frac\cdot m \\ 0\end{pmatrix} + \begin{pmatrix} (1-frac)m \\ 0\end{pmatrix}
-$$
+$$ \begin{pmatrix} m \\ p\end{pmatrix} \rightarrow \begin{pmatrix} frac\cdot m \\ 0\end{pmatrix} + \begin{pmatrix} (1-frac)m \\ 0\end{pmatrix} $$
+
 where $frac$ is the division ratio.
 
 ### Bayesian Data Analysis
 For all models, the set of parameters to be inferred is 
-$$
-\underline{\theta} = \{\mu, \nu, \omega_2, a, b, c, d\}
-$$
+$$ \underline{\theta} = \{\mu, \nu, \omega_2, a, b, c, d\} $$
 
 Applying the Bayes theorem, we can write
-$$
-f(\underline{\theta}|\tau, \omega_1, frac, M) \propto f(\tau, \omega_1, frac|\underline{\theta}, M)\cdot f(\underline{\theta}, M)
-$$
+$$ f(\underline{\theta}|\tau, \omega_1, frac, M) \propto f(\tau, \omega_1, frac|\underline{\theta}, M)\cdot f(\underline{\theta}, M) $$
+
 where $M$ is the background information given by the selected model and $\tau$, $\omega_1$ and $frac$ are provided by the data.
 
 Regarding the likelihood, $f(\tau, \omega_1, frac|\underline{\theta})$, assuming $\tau$, $\omega_1$ and $frac$ are independent, it can be written as the product of the probability density function of each of them 
-$$
-f(\tau, \omega_1, frac|\underline{\theta}) = 
-f(\tau|\omega_1, frac, \underline{\theta}) \cdot f(\omega_1|\underline{\theta}) \cdot f(frac|\underline{\theta})
-$$ 
+$$ f(\tau, \omega_1, frac|\underline{\theta}) = 
+f(\tau|\omega_1, frac, \underline{\theta}) \cdot f(\omega_1|\underline{\theta}) \cdot f(frac|\underline{\theta}) $$
+ 
 where the last 2 are respectively the $Gamma(c, d)$ and $Beta(a, b)$ distributions, while the former is the probability density function of division times, which depends on the selected model and it is the derivative of the survival function $s(t)$.
 
 **Workflow**
