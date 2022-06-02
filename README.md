@@ -67,7 +67,7 @@ As before, the traits evolution and the cell division are governed by $g(\underl
 
 $$
 \begin{aligned}
-g(\underline{x})&=\omega_1m\begin{pmatrix} 1\\ c\end{pmatrix} \\
+g(\underline{x})&=\omega_1m (1, c) \\
 h(p)&=
     \begin{cases}
     0   & , \, p<u \\
@@ -90,7 +90,7 @@ $$
 $$
 
 and the division process occurs in the following way
-$$ (m,  p) \rightarrow (frac\cdot m, 0) \quad , \quad ((1-frac)m, 0)$$
+$$ (m,  p) \rightarrow (frac\cdot m, 0) \, , \, ((1-frac)\cdot m, 0)$$
 where $frac$ is the division ratio.
 
 ### Bayesian Data Analysis
