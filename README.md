@@ -51,8 +51,8 @@ $$
 g(x)&= \omega_1 x \\
 h(x)&=
 \begin{cases}
-    0  & x<\mu \\
-    \omega_2 \cdot \frac{x+v}{u+v} & x\geq \mu
+    0  & , x<\mu \\
+    \omega_2 \cdot \frac{x+v}{u+v} & , x\geq \mu
 \end{cases}
 \end{align}
 $$
@@ -66,11 +66,14 @@ $$ \underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} $$
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
 
 $$
-\begin{align}
-    g(\underline{x})&=\omega_1m (1, c) \\
-    h(p)&= 0 \text{  if  } p<\mu \\
-    h(p)&= \omega_2 \cdot \frac{p+v}{u+v}  \text{  if  } p\geq \mu
-\end{align}
+\begin{aligned}
+g(\underline{x})&=\omega_1m\cdot (1,c) \\
+h(p)&=
+    \begin{cases}
+    0   & , p<\mu \\
+    \omega_2 \, \frac{p+v}{u+v} & , p\geq \mu
+    \end{cases}
+\end{aligned}
 $$
 
 From $g(\underline{x})$ we can notice that the cell size still grows exponentially and the protein content also follows this evolution, scaled by the factor $c$. As $c$ doesn't have a real meaning, we set it to $1$. 
