@@ -48,9 +48,12 @@ Also in this case the processes considered are growth and division, governed by 
 
 $$
 \begin{align}
-    g(x)&= \omega_1 x \\
-    h(x)&=  0 \text{  if  } x<u \\
-    h(x)&= \omega_2 \cdot \frac{x+v}{u+v} \text{  if  } x\geq u
+g(x)&= \omega_1 x \\
+h(x)&=
+\begin{cases}
+    0  & x<\mu \\
+    \omega_2 \cdot \frac{x+v}{u+v} & x\geq \mu
+\end{cases}
 \end{align}
 $$
 
@@ -65,8 +68,8 @@ As before, the traits evolution and the cell division are governed by $g(\underl
 $$
 \begin{align}
     g(\underline{x})&=\omega_1m (1, c) \\
-    h(p)&= 0 \text{  if  } p<u \\
-    h(p)&= \omega_2 \cdot \frac{p+v}{u+v}  \text{  if  } p\geq u
+    h(p)&= 0 \text{  if  } p<\mu \\
+    h(p)&= \omega_2 \cdot \frac{p+v}{u+v}  \text{  if  } p\geq \mu
 \end{align}
 $$
 
