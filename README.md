@@ -47,11 +47,11 @@ As in the previous model, even in this case the cell growth is governed by a sin
 Also in this case the processes considered are growth and division, governed by $g(x)$ and $h(x)$ respectively. In this model we define $g(x)$ and $h(x)$ as follows
 
 $$
-\begin{aligned}
+\begin{align}
     g(x)&= \omega_1 x \\
     h(x)&=  0 \text{  if  } x<u \\
     h(x)&= \omega_2 \cdot \frac{x+v}{u+v} \text{  if  } x\geq u
-\end{aligned}
+\end{align}
 $$
 
 where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower bounded by $u$.   
@@ -63,11 +63,11 @@ $$ \underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} $$
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
 
 $$
-\begin{aligned}
+\begin{align}
     g(\underline{x})&=\omega_1m (1, c) \\
     h(p)&= 0 \text{  if  } p<u \\
     h(p)&= \omega_2 \cdot \frac{p+v}{u+v}  \text{  if  } p\geq u
-\end{aligned}
+\end{align}
 $$
 
 From $g(\underline{x})$ we can notice that the cell size still grows exponentially and the protein content also follows this evolution, scaled by the factor $c$. As $c$ doesn't have a real meaning, we set it to $1$. 
