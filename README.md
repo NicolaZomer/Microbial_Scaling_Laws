@@ -49,8 +49,7 @@ Also in this case the processes considered are growth and division, governed by 
 $$
 \begin{aligned}
 g(x)&= \omega_1 x \\
-h(x)&=
-\begin{cases}
+h(x)&= \begin{cases}
     0  & , \, x<u \\
     \omega_2 \cdot \frac{x+v}{u+v} & , \, x\geq u
 \end{cases}
@@ -68,11 +67,10 @@ As before, the traits evolution and the cell division are governed by $g(\underl
 $$
 \begin{aligned}
 g(\underline{x})&=\omega_1m (1, c) \\
-h(p)&=
-    \begin{cases}
+h(p)&= \begin{cases}
     0   & , \, p<u \\
     \omega_2 \, \frac{p+v}{u+v} & , \, p\geq u
-    \end{cases}
+\end{cases}
 \end{aligned}
 $$
 
@@ -90,7 +88,7 @@ $$
 $$
 
 and the division process occurs in the following way
-$$ (m,  p) \rightarrow (frac\cdot m, 0) \, , \, ((1-frac)\cdot m, 0)$$
+$$ (m,  p) \rightarrow (frac\cdot m, 0) \; , \; ((1-frac)\cdot m, 0)$$
 where $frac$ is the division ratio.
 
 ### Bayesian Data Analysis
