@@ -29,7 +29,7 @@ f(\omega_1|c, d) &= Gamma(c, d)
 \end{align}
 $$
 
-### Model 0
+### Model 0 ("Starting model")
 We start with a very simple stochastic model, biologically not very realistic, but useful to start familiarizing with the problem. In this first model we define $g(x)$ and $h(x)$ as 2 linear functions
 
 $$
@@ -66,14 +66,14 @@ $$ \underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} $$
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
 
 $$
-\begin{aligned}
+\begin{align}
 g(\underline{x})&=\omega_1m\cdot (1,c) \\
 h(p)&=
     \begin{cases}
     0   & , p<\mu \\
     \omega_2 \cdot \frac{p+v}{u+v} & , p\geq \mu
     \end{cases}
-\end{aligned}
+\end{align}
 $$
 
 From $g(\underline{x})$ we can notice that the cell size still grows exponentially and the protein content also follows this evolution, scaled by the factor $c$. As $c$ doesn't have a real meaning, we set it to $1$. 

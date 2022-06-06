@@ -5,6 +5,9 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
+
+
+#Plot cumulative distribution (for the lognormal)
 def cumulative(array, title='Cumulative', xlabel='x axis', ylabel='y axis'):
     fig, ax = plt.subplots(1,1,figsize=(15,10))
     array = np.array(array)
@@ -20,10 +23,11 @@ def cumulative(array, title='Cumulative', xlabel='x axis', ylabel='y axis'):
     ax.scatter(array, cumul, s=150, edgecolor='black', alpha=0.7)
     return fig, ax, cumul, array
 
-#Plot of the posterior distribution of simulated data
 
+
+#Plot of the posterior distribution of simulated data
 def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
-            y_max=2.2, info = False):
+            y_max=2.2, info = False, plot=True):
 
     if info:
         print('''
@@ -38,7 +42,7 @@ def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
         
         
         
-        
+     
         ''')
     if parameter == 'omega_2':
        parameter = '$\\omega_2$'
@@ -59,47 +63,58 @@ def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
         index = 6
     else:
         return 'The parameter should be chose between [omega_2, mu, nu, a, b, c, d]'
+    if plot:
+        fig, ax = plt.subplots(1,1 , figsize=(15, 10))
+        res_param = ax.hist(chain[:,index], bins='fd', edgecolor='black', alpha=0.5, density=True)
 
-    fig, ax = plt.subplots(1,1 , figsize=(15, 10))
-    res_param = ax.hist(chain[:,index], bins='fd', edgecolor='black', alpha=0.5, density=True)
+        counts_param = res_param[0]
+        edges_param = res_param[1]
+        patches_param = res_param[2]
+        centers_param = (edges_param[:-1] + edges_param[1:]) / 2
 
-    counts_param = res_param[0]
-    edges_param = res_param[1]
-    patches_param = res_param[2]
-    centers_param = (edges_param[:-1] + edges_param[1:]) / 2
+        tmp = np.cumsum(np.diff(edges_param)*counts_param)
 
-    tmp = np.cumsum(np.diff(edges_param)*counts_param)
+        max_index = np.argmax(counts_param)
+        max_param = (edges_param[max_index] + edges_param[max_index + 1])/2
+        median_param = (edges_param[len(tmp[tmp<0.5])+1] + edges_param[len(tmp[tmp<0.5])+2])/2
+        print('Median value of ', parameter,':', round(median_param, 4))
+        for i in range(len(tmp[tmp<0.025])):
+            patches_param[i].set_facecolor('green')
+        for i in range(len(tmp[tmp<0.975]), len(tmp)):
+            patches_param[i].set_facecolor('green')
 
-    max_index = np.argmax(counts_param)
-    max_param = (edges_param[max_index] + edges_param[max_index + 1])/2
-    median_param = (edges_param[len(tmp[tmp<0.5])+1] + edges_param[len(tmp[tmp<0.5])+2])/2
-    print('Median value of ', parameter,':', round(median_param, 4))
-    for i in range(len(tmp[tmp<0.025])):
-        patches_param[i].set_facecolor('green')
-    for i in range(len(tmp[tmp<0.975]), len(tmp)):
-        patches_param[i].set_facecolor('green')
+        ax.minorticks_on()
+        ax.set_ylabel('Counts', fontsize=15)
+        ax.set_xlabel(parameter, fontsize=15)
+        ax.set_title(parameter + ' posterior', fontsize=20)
+        ax.axvline(median_param, color='crimson', linestyle='dashed',  linewidth=3, label='median '+parameter + ' = ' + str(round(median_param, 4)))
+        ax.axvline(max_param, color='darkgreen', linestyle='dashed',  linewidth=3, label='max '+ parameter + ' = ' + str(round(max_param, 4)))
 
-    ax.minorticks_on()
-    ax.set_ylabel('Counts', fontsize=15)
-    ax.set_xlabel(parameter, fontsize=15)
-    ax.set_title(parameter + ' posterior', fontsize=20)
-    ax.axvline(median_param, color='crimson', linestyle='dashed',  linewidth=3, label='median '+parameter + ' = ' + str(round(median_param, 4)))
-    ax.axvline(max_param, color='darkgreen', linestyle='dashed',  linewidth=3, label='max '+ parameter + ' = ' + str(round(max_param, 4)))
+        ax.text(median_param+x_median, y_median, 'median '+parameter , color='crimson', fontsize=17)
+        ax.text(max_param+x_max, y_max,'max '+parameter, color='darkgreen', fontsize=17)
 
-    ax.text(median_param+x_median, y_median, 'median '+parameter , color='crimson', fontsize=17)
-    ax.text(max_param+x_max, y_max,'max '+parameter, color='darkgreen', fontsize=17)
+        print('Max value of ', parameter,' :', round(max_param, 4))
+
+        ax.legend(fontsize=17, facecolor='aliceblue', shadow = True, edgecolor='black')
+
+    else:
+        res_param = np.histogram(chain[:,index], bins='fd')
+        counts_param = res_param[0]
+        edges_param = res_param[1]
+        centers_param = (edges_param[:-1] + edges_param[1:]) / 2
+        tmp = np.cumsum(np.diff(edges_param)*counts_param)
+        max_index = np.argmax(counts_param)
+        max_param = (edges_param[max_index] + edges_param[max_index + 1])/2
+        median_param = (edges_param[len(tmp[tmp<0.5])+1] + edges_param[len(tmp[tmp<0.5])+2])/2
+
+    if plot:
+        return fig, ax, centers_param, counts_param, max_param
+    else:
+        return centers_param, counts_param, max_param
 
 
-    print('Max value of ', parameter,' :', round(max_param, 4))
 
-
-    ax.legend(fontsize=17, facecolor='aliceblue', shadow = True, edgecolor='black')
-
-    return fig, ax, centers_param, counts_param, max_param
-
-
-# The function to plot the chains of the sampler
-
+# Function to plot the chains of the sampler
 def chains_plot(chain, title_list = ['$\\omega_2$', '$\\mu$', '$\\nu$', 'a', 'b', 'c', 'd'], info = True):
 
     if info:
@@ -107,7 +122,6 @@ def chains_plot(chain, title_list = ['$\\omega_2$', '$\\mu$', '$\\nu$', 'a', 'b'
         The chain to be put in input has to be the flattened one
         
         ''')
-
 
     fig , ax = plt.subplots(chain.shape[1],1, figsize=(45, 100))
 
@@ -124,26 +138,15 @@ def chains_plot(chain, title_list = ['$\\omega_2$', '$\\mu$', '$\\nu$', 'a', 'b'
 
 
 
-
-
 #From our beloved Amos package we copy the boxplot function
-
 def boxplot(y, colors, figsize=(15,10), linewidth=2, color_median='black', linewidth_median = 3, size_props = 12, title = 'boxplot', font_title = 20, xlabel='x_axis', x_font=15, ylabel='y_axis', y_font=15, labels=False, list_labels=[] ):
     
     fig, ax = plt.subplots(1,1,figsize=figsize)
-    
     bp = ax.boxplot(y,boxprops=dict(linewidth=linewidth), patch_artist=True, medianprops=dict(color=color_median, linewidth=linewidth_median), flierprops=dict(markersize=size_props))
     
-    
     ax.set_title(title, fontsize=font_title)
-    
-
     ax.set_xlabel(xlabel, fontsize=x_font)
-
     ax.set_ylabel(ylabel, fontsize=y_font)
-
-   
-    
 
     #Still to insert the case were y is a matrix
     
@@ -154,7 +157,6 @@ def boxplot(y, colors, figsize=(15,10), linewidth=2, color_median='black', linew
     for patch, color in zip(bp['boxes'], colors):
         patch.set_facecolor(color)
    
-
     ax.minorticks_on()
     ax.xaxis.set_tick_params(which='minor', bottom=False , size=10)
     ax.yaxis.set_tick_params(labelsize=14, size=10)
@@ -162,12 +164,11 @@ def boxplot(y, colors, figsize=(15,10), linewidth=2, color_median='black', linew
     if labels:
         ax.set_xticklabels(list_labels)
            
-    
     return fig, ax, bp
 
 
 
-
+# Get informations about the boxplot function
 def info_boxplot():
     print('''
     The boxplot function takes only one mandatory argument: y that is either a matrix-like with the series to plot as columns or an array-like of array-likes.
@@ -187,8 +188,9 @@ def info_boxplot():
     ''')
 
 
-#Time series plot
 
+
+#Time series plot
 def plot_evol(all_times, cell_sizes):
     fig, ax = plt.subplots(1,1 , figsize=(25, 10))
     ax.plot(all_times, cell_sizes, linewidth=3, color='C0')
@@ -198,6 +200,7 @@ def plot_evol(all_times, cell_sizes):
     ax.minorticks_on()
     ax.grid(alpha=0.5)
     return fig, ax
+
 
 
 # Histograms (with equal bins) + estimation of overlap
@@ -224,8 +227,6 @@ def overlap_hist(real_data, sim_data):
     return fig, ax
 
 
-    #plt.show()
-
 
 # 3D scatterplot of data (generation time, growth rate, division ratio)
 def plot_3d_interactive(df_, real_data_title=True):
@@ -246,4 +247,3 @@ def plot_3d_interactive(df_, real_data_title=True):
     )
 
     return fig
-    #fig.show()
