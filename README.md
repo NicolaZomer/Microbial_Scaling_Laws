@@ -7,6 +7,20 @@ In this project, we want to combine methods from _Statistical Physics_ and _Baye
 - [Paolo Zinesi](https://github.com/PaoloZinesi)
 - [Nicola Zomer](https://github.com/NicolaZomer)
 
+## Organization of the repository
+The notebook [Microbial_Scaling_Laws.ipynb](./Microbial_Scaling_Laws.ipynb) is the root file of the repository and includes:
+- the theoretical results, both general and specific of the single models;
+- the explanation of the methods used and the description of the workflow followed;
+- the import and the 3-dimensional plot of the data used in the analysis;
+- the hyperlinks to the notebooks of the individual models;
+- the general results of all models. 
+
+The repository is then divided into 4 folders:
+1. [analysis_real_data](./analysis_real_data)
+2. [analysis_sim_data](./analysis_sim_data)
+3. [data](./data)
+4. [images](./images)
+
 ## Overview
 ### Growth and division processes: general model 
 In our models we consider the evolution of a single non-interacting cell, which undergoes 2 processes:
@@ -30,6 +44,8 @@ f(\omega_1|c, d) &= Gamma(c, d)
 $$
 
 ### Model 0 ("Starting model")
+**Notebook: [Model 0](./analysis_real_data/REAL_starting_model.ipynb)**
+
 We start with a very simple stochastic model, biologically not very realistic, but useful to start familiarizing with the problem. In this first model we define $g(x)$ and $h(x)$ as 2 linear functions
 
 $$
@@ -42,6 +58,8 @@ $$
 where $\omega_1$ and $\omega_2$ are frequencies, while $\mu$ and $\nu$ are sizes (tipycally measured in $\mu m$). The ratio between $\omega_1$ and $\omega_2$ is the order parameter that triggers the phase transition. The parameters $\mu$ and $\nu$ are necessary to cut off the probability distribution (in zero and for large values of $x$), which is important both for physical reasons and for making the distribution normalizable. Introducing these parameters is a mathematical trick, useful for example to prevent the cell from having a too small size, which however is difficult to justify from a biological point of view. We will then see better models, biologically speaking.
 
 ### Model 1
+**Notebook: [Model 1](./analysis_real_data/REAL_Model_1.ipynb)**
+
 As in the previous model, even in this case the cell growth is governed by a single trait, which is the size. However, this model is biologically more realistic, mainly because a lower bound is placed on the size of the cell such that it can divide. 
 
 Also in this case the processes considered are growth and division, governed by $g(x)$ and $h(x)$ respectively. In this model we define $g(x)$ and $h(x)$ as follows
@@ -60,6 +78,8 @@ $$
 where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower bounded by $u$.   
 
 ### Model 2
+**Notebook: [Model 2](./analysis_real_data/REAL_Model_2.ipynb)**
+
 The main difference between this model and the previous ones is that here we consider 2 traits: the cell size $m(t)$ and its protein content $p(t)$. We call $\underline{x}$ the vector
 $$ \underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} $$
 

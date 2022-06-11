@@ -1,0 +1,25 @@
+# plot of s(t)
+
+fig, ax = plt.subplots(figsize=(10, 7))
+x_ax = np.linspace(0,10,1000)
+
+ax.plot(x_ax, CDF(x_ax,(1,0.9,0.1,1,0.05)), linewidth=4)       ##CDF of the corresponent Model
+
+ax.minorticks_on()
+ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+
+ax.xaxis.set_tick_params(labelsize=12, size=8)
+ax.xaxis.set_tick_params(which='minor', size=4)
+ax.yaxis.set_tick_params(labelsize=12, size=10)
+ax.yaxis.set_tick_params(which='minor', size=4)
+
+ax.set_ylabel('Survivability s', fontsize=15)
+ax.set_xlabel('Time t [s]', fontsize=15)
+
+ax.set_title('s(t) - Model NAME MODEL', fontsize=20)      #name of the model to modify
+                                                            # Linear Model <-> for starting 0
+                                                            # Model with Protein <-> for model 2
+
+plt.show()
+fig.savefig('../images/s_model{MODEL_NUMBER}.png')         # MODEL_NUMBER= 0,1,2

@@ -2,6 +2,8 @@ import numpy as np
 from scipy import stats
 from pynverse import inversefunc
 import emcee
+from .plot_funcs import plot_func_sim
+
 
 
 """
@@ -391,10 +393,6 @@ def sim_t_draw(log_CDF, x_function, size, points_per_evolution, xb, model, pars_
         else:
             raise Exception("Model has to be either 's', '1', or '2' ")
 
-        # find maximum monotonically increasing sequence
-        #tau_seq = np.linspace(t0, 10/omega1, num=1000)
-        #s_seq = CDF(tau_seq, parameters)
-        #t_max = tau_seq[np.argmax((s_seq[1:]-s_seq[:-1])>=0)]
         t_max = 100/omega1 # 100 tau
 
         # invert function
@@ -416,7 +414,6 @@ def sim_t_draw(log_CDF, x_function, size, points_per_evolution, xb, model, pars_
 
     for i in range(size): 
         parameters = (omg1[i], omega2, mu, nu, xb) # omega1, omega2, mu, nu, xb
-        #tau = draw_tau_numerical(s_drawn[i], parameters=parameters)
         tau = draw_tau_numerical(log_s_drawn[i], parameters=parameters)
         sim_t_starting.append(tau)
 
@@ -455,10 +452,6 @@ def sim_t_draw_real(log_CDF, x_function, size, points_per_evolution, xb, frac, o
         else:
             raise Exception("Model has to be either 's', '1', or '2' ")
 
-        # find maximum monotonically increasing sequence
-        #tau_seq = np.linspace(t0, 10/omega1, num=1000)
-        #s_seq = CDF(tau_seq, parameters)
-        #t_max = tau_seq[np.argmax((s_seq[1:]-s_seq[:-1])>=0)]
         t_max = 100/omega1 # 100 tau
 
         # invert function
@@ -477,7 +470,6 @@ def sim_t_draw_real(log_CDF, x_function, size, points_per_evolution, xb, frac, o
 
     for i in range(size): 
         parameters = (omega_1[i], omega2, mu, nu, xb) # omega1, omega2, mu, nu, xb
-        #tau = draw_tau_numerical(s_drawn[i], parameters=parameters)
         tau = draw_tau_numerical(log_s_drawn[i], parameters=parameters)
         sim_t_starting.append(tau)
 
@@ -541,25 +533,25 @@ def predictive_density(df_, size, p0, h_func, cdf_func, priors, N_perm=10, burn_
         # MAX PARAMETERS
 
         # omega2 max
-        _, _, max_omega2_train = plot_funcs.plot_func_sim(chain = chain_train, parameter = 'omega_2', plot=False)
+        _, _, max_omega2_train = plot_func_sim(chain = chain_train, parameter = 'omega_2', plot=False)
 
         # mu max
-        _, _, max_mu_train = plot_funcs.plot_func_sim(chain = chain_train, parameter = 'mu', plot=False)
+        _, _, max_mu_train = plot_func_sim(chain = chain_train, parameter = 'mu', plot=False)
 
         # nu max
-        _, _, max_nu_train = plot_funcs.plot_func_sim(chain = chain_train, parameter = 'nu', plot=False)
+        _, _, max_nu_train = plot_func_sim(chain = chain_train, parameter = 'nu', plot=False)
 
         # a max
-        _, _, max_a_train = plot_funcs.plot_func_sim(chain = chain_train, parameter = 'a', plot=False)
+        _, _, max_a_train = plot_func_sim(chain = chain_train, parameter = 'a', plot=False)
 
         # b max
-        _, _, max_b_train = plot_funcs.plot_func_sim(chain = chain_train, parameter = 'b', plot=False)
+        _, _, max_b_train = plot_func_sim(chain = chain_train, parameter = 'b', plot=False)
 
         # c max
-        _, _, max_c_train = plot_funcs.plot_func_sim(chain = chain_train, parameter = 'c', plot=False)
+        _, _, max_c_train = plot_func_sim(chain = chain_train, parameter = 'c', plot=False)
 
         # d max
-        _, _, max_d_train = plot_funcs.plot_func_sim(chain = chain_train, parameter = 'd', plot=False)
+        _, _, max_d_train = plot_func_sim(chain = chain_train, parameter = 'd', plot=False)
 
 
         # logarithm of predictive density with current train+test set
@@ -582,3 +574,20 @@ def predictive_density(df_, size, p0, h_func, cdf_func, priors, N_perm=10, burn_
 
     return(np.asarray(log_predD))
 
+
+'''
+Priors of omega1, omega2, mu, nu
+'''
+
+def prior_omega2(omega2):
+    return(stats.lognorm.pdf(omega2, s=np.sqrt(1/3 - np.log(0.9)), loc=0, scale=np.exp(1/3 )))
+    #return(stats.lognorm.pdf(x, s=1/2, loc=0, scale=np.exp(np.log(0.9)+1/4)))
+
+def prior_mu(mu):
+    return(stats.beta.pdf(mu, a=2, b=5))
+
+def prior_nu(nu):
+    return(stats.lognorm.pdf(nu, s=1/3, loc=0.1, scale=np.exp(1/9)))
+    
+def prior_omega1(omega1):
+    return(stats.lognorm.pdf(omega1, s=1/3, loc=0, scale=np.exp(1/9)))
