@@ -493,7 +493,7 @@ def sim_t_draw_real(log_CDF, x_function, size, points_per_evolution, xb, frac, o
     
 
 # Predictive density estimate
-def predictive_density(df_, size, p0, h_func, cdf_func, priors, N_perm=10, burn_in=1700, n_steps=5000):
+def predictive_density(df_, size, p0, h_func, cdf_func, priors, N_perm=10, burn_in=1700, n_steps=5000, n_walkers=20):
 
     log_predD = []
     size_train = int(0.5*size)
@@ -561,8 +561,8 @@ def predictive_density(df_, size, p0, h_func, cdf_func, priors, N_perm=10, burn_
                                                     max_mu_train,
                                                     max_nu_train,
                                                     np.array(df_test['length_birth'])),
-                                            h_func=functions.h_mod1,
-                                            cdf_func=functions.CDF_mod1))) +\
+                                            h_func=h_func,
+                                            cdf_func=cdf_func))) +\
                         np.sum(np.log(stats.beta.pdf(np.array(df_test['division_ratio']),
                                                 a=max_a_train,
                                                 b=max_b_train))) +\

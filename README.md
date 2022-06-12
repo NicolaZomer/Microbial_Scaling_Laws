@@ -81,7 +81,7 @@ where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower b
 **Notebook: [Model 2](./analysis_real_data/REAL_Model_2.ipynb)**
 
 The main difference between this model and the previous ones is that here we consider 2 traits: the cell size $m(t)$ and its protein content $p(t)$. We call $\underline{x}$ the vector
-$$ \underline{x} = \begin{pmatrix} m\\ p\end{pmatrix} $$
+$$ \underline{x} = (m, p) $$
 
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
 
@@ -121,8 +121,15 @@ Applying the Bayes theorem, we can write
 $$ f(\underline{\theta}|\tau, \omega_1, frac, M) \propto f(\tau, \omega_1, frac|\underline{\theta}, M)\cdot f(\underline{\theta}, M) $$
 where $M$ is the background information given by the selected model and $\tau$, $\omega_1$ and $frac$ are provided by the data.
 
-Regarding the likelihood, $f(\tau, \omega_1, frac|\underline{\theta})$, assuming $\tau$, $\omega_1$ and $frac$ are independent, it can be written as the product of the probability density function of each of them 
-$$ f(\tau, \omega_1, frac|\underline{\theta}) = f(\tau|\omega_1, frac, \underline{\theta}) \cdot f(\omega_1|\underline{\theta}) \cdot f(frac|\underline{\theta}) $$
+Regarding the likelihood, $f(\tau, \omega_1, frac|\underline{\theta})$, applying the chain rule and exploiting the fact that $frac$ and $\omega_1$ are independent, it can be written as the product of the conditional probability density function of each random variable of interest
+
+$$
+\begin{align}
+    f(\tau, \omega_1, frac|\underline{\theta}) &= f(\tau|\omega_1, frac, \underline{\theta}) \cdot f(\omega_1, frac|\underline{\theta}) \\
+    &=f(\tau|\omega_1, frac, \underline{\theta}) \cdot f(\omega_1|\underline{\theta}) \cdot f(frac|\underline{\theta})
+\end{align}
+$$ 
+
 where the last 2 are respectively the $Gamma(c, d)$ and $Beta(a, b)$ distributions, while the former is the probability density function of division times, which depends on the selected model and it is the derivative of the survival function $s(t)$.
 
 **Workflow**
