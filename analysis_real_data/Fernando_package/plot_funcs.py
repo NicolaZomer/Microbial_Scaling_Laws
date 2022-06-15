@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.express as px
-
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
 
 
 #Plot cumulative distribution (for the lognormal)
@@ -83,6 +84,9 @@ def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
         for i in range(len(tmp[tmp<0.975]), len(tmp)):
             patches_param[i].set_facecolor('green')
 
+        cred_int_low = patches_param[len(tmp[tmp<0.025])].get_x()
+        cred_int_high = patches_param[len(tmp[tmp<0.975])].get_x()
+
         ax.minorticks_on()
         ax.set_ylabel('Counts', fontsize=15)
         ax.set_xlabel(parameter, fontsize=15)
@@ -94,6 +98,7 @@ def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
         ax.text(max_param+x_max, y_max,'max '+parameter, color='darkgreen', fontsize=17)
 
         print('Max value of ', parameter,' :', round(max_param, 4))
+        print('Credibility interval of ', parameter,' : [', round(cred_int_low, 4), ',', round(cred_int_high, 4), ']')
 
         ax.legend(fontsize=17, facecolor='aliceblue', shadow = True, edgecolor='black')
 
@@ -108,7 +113,7 @@ def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
         median_param = (edges_param[len(tmp[tmp<0.5])+1] + edges_param[len(tmp[tmp<0.5])+2])/2
 
     if plot:
-        return fig, ax, centers_param, counts_param, max_param
+        return fig, ax, centers_param, counts_param, max_param, cred_int_low, cred_int_high
     else:
         return centers_param, counts_param, max_param
 
@@ -246,4 +251,66 @@ def plot_3d_interactive(df_, real_data_title=True):
         )
     )
 
+    return fig
+
+
+
+def comparison_3d(df1, df2, df3, df4):
+    fig = make_subplots(rows=2, cols=2,
+                        specs=[[{'type': 'scene'}, {'type': 'scene'}],
+                            [{'type': 'scene'}, {'type': 'scene'}]],
+                        subplot_titles=("Real data", "Linear model", "Cut-off model", "Protein model"),
+                        )
+
+    fig.add_trace(go.Scatter3d( x=df1['generationtime'], y=df1['growth_rate'], z=df1['division_ratio'], 
+            mode='markers', marker=dict(
+            size=3,
+            color='blue',
+            opacity=0.3, 
+        )), row=1, col=1)
+
+
+
+    fig.update_layout(
+        title='3d scatter plots comparison', 
+        
+        scene=dict(
+                xaxis_title='generationtime',
+                yaxis_title='growth_rate',
+                zaxis_title='division_ratio'),
+                scene2=dict(
+                xaxis_title='generationtime',
+                yaxis_title='growth_rate',
+                zaxis_title='division_ratio'),
+                scene3=dict(
+                xaxis_title='generationtime',
+                yaxis_title='growth_rate',
+                zaxis_title='division_ratio'),
+                scene4=dict(
+                xaxis_title='generationtime',
+                yaxis_title='growth_rate',
+                zaxis_title='division_ratio')
+    )
+
+    fig.add_trace(go.Scatter3d( x=df2['generationtime'], y=df2['growth_rate'], z=df2['division_ratio'], 
+            mode='markers', marker=dict(
+            size=3,
+            color='blue',
+            opacity=0.3
+        )), row=1, col=2)
+
+    fig.add_trace(go.Scatter3d( x=df3['generationtime'], y=df3['growth_rate'], z=df3['division_ratio'], 
+            mode='markers', marker=dict(
+            size=3,
+            color='blue',
+            opacity=0.3
+        )), row=2, col=1)
+
+    fig.add_trace(go.Scatter3d( x=df4['generationtime'], y=df4['growth_rate'], z=df4['division_ratio'], 
+            mode='markers', marker=dict(
+            size=3,
+            color='blue',
+            opacity=0.3
+        )), row=2, col=2)
+    fig.update_layout(showlegend=False, width=1000, height=1000)
     return fig

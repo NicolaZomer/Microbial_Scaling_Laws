@@ -21,6 +21,8 @@ The repository is then divided into 4 folders:
 3. [data](./data)
 4. [images](./images)
 
+In the folder [analysis_real_data](./analysis_real_data) it is possible to find a Python package, containing the functions used in the analysis of real data: [Fernando_package](./analysis_real_data/Fernando_package).
+
 ## Overview
 ### Growth and division processes: general model 
 In our models we consider the evolution of a single non-interacting cell, which undergoes 2 processes:
@@ -44,7 +46,7 @@ f(\omega_1|c, d) &= Gamma(c, d)
 $$
 
 ### Model 0 ("Starting model")
-**Notebook: [Model 0](./analysis_real_data/REAL_starting_model.ipynb)**
+**Notebook: [Model 0](./analysis_real_data/REAL_Model_0.ipynb)**
 
 We start with a very simple stochastic model, biologically not very realistic, but useful to start familiarizing with the problem. In this first model we define $g(x)$ and $h(x)$ as 2 linear functions
 

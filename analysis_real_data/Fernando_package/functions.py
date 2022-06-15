@@ -495,6 +495,8 @@ def sim_t_draw_real(log_CDF, x_function, size, points_per_evolution, xb, frac, o
 # Predictive density estimate
 def predictive_density(df_, size, p0, h_func, cdf_func, priors, N_perm=10, burn_in=1700, n_steps=5000, n_walkers=20):
 
+    np.random.seed(24082003)
+
     log_predD = []
     size_train = int(0.5*size)
 
