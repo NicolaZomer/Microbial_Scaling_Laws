@@ -103,7 +103,7 @@ def plot_func_sim(chain, parameter, x_median=-0.1, y_median=2.26, x_max=0.02, \
         ax.legend(fontsize=17, facecolor='aliceblue', shadow = True, edgecolor='black')
 
     else:
-        res_param = np.histogram(chain[:,index], bins='fd')
+        res_param = np.histogram(chain[:,index], bins='fd', density=True)
         counts_param = res_param[0]
         edges_param = res_param[1]
         centers_param = (edges_param[:-1] + edges_param[1:]) / 2
