@@ -82,7 +82,7 @@ where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower b
 ### Model 2
 **Notebook: [Model 2](./analysis_real_data/REAL_Model_2.ipynb)**
 
-The main difference between this model and the previous ones is that here we consider 2 traits: the cell size $m(t)$ and its protein content $p(t)$ . We call $\underline{x}$ the vector
+The main difference between this model and the previous ones is that here we consider 2 traits: the cell size $m(t)$ and its protein content $p(t)$. We call $\underline{x}$ the vector
 $$ \underline{x} = (m, p) $$
 
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
