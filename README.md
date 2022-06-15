@@ -15,11 +15,12 @@ The notebook [Microbial_Scaling_Laws.ipynb](./Microbial_Scaling_Laws.ipynb) is t
 - the hyperlinks to the notebooks of the individual models;
 - the general results of all models. 
 
-The repository is then divided into 4 folders:
+The repository is then divided into 5 folders:
 1. [analysis_real_data](./analysis_real_data)
 2. [analysis_sim_data](./analysis_sim_data)
 3. [data](./data)
 4. [images](./images)
+5. [real_data_alternative_way](./real_data_alternative_way), where we use the means and stds as parameters for the Gamma and Beta distributions instead of a,b,c,d
 
 In the folder [analysis_real_data](./analysis_real_data) it is possible to find a Python package, containing the functions used in the analysis of real data: [Fernando_package](./analysis_real_data/Fernando_package).
 
