@@ -14,7 +14,7 @@ Starting model
 def x_function_start(t, pars):
     (omega1, _, mu, _, xb) = pars
 
-    x = (xb+mu/omega1)*np.exp(omega1*t)-mu/omega1
+    x = (xb+mu)*np.exp(omega1*t)-mu
     return x
     
 
@@ -31,7 +31,7 @@ def log_CDF_start(t, pars):
     # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
     (omega1, omega2, mu, nu, xb) = pars
 
-    ln_s_ = omega2*t*(mu/nu - 1) + (omega1/omega2)*((mu + xb)/nu)*(1-np.exp(omega1*t))
+    ln_s_ = omega2*t*(mu/nu - 1) + (omega2/omega1)*((mu + xb)/nu)*(1-np.exp(omega1*t))
     return ln_s_
 
 
@@ -66,67 +66,10 @@ def h_mod1(t, pars):
     return h_
 
 
-#Logarithm of survival function s(t) for a float t for model 1
-# (MIGHT BE REPLACED BY THE MORE COMPACT FUNCTION BELOW)
-"""
-def log_CDF_float_mod1(t, pars):
-    # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
-    (omega1, omega2, mu, nu, xb) = pars
-
-
-    if (type(omega1) == np.ndarray) or (type(xb)==np.ndarray):
-        t0 = (1.0/omega1) * np.log(mu/xb)
-        t0[t0 < 0] = 0
-    
-    else:
-
-        # threshold time
-        t0 = max([0, (1.0/omega1) * np.log(mu/xb)])
-
-  
-    if t>=t0:
-        ln_s_ = - ( (xb/(mu+nu)) * (omega2/omega1) * (np.exp(omega1*t)-np.exp(omega1*t0)) +\
-                    ((nu-xb)/(mu+nu)) * omega2 * (t-t0) )
-    else:
-        ln_s_ = 0                 # if p(t) < mu
-        
-
-    return ln_s_
-"""
-
-
-#Logarithm of survival function s(t) for an array t
-# (MIGHT BE REPLACED BY THE MORE COMPACT FUNCTION BELOW)
-"""
-def log_CDF_arr_mod1(t, pars):
-    # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
-    (omega1, omega2, mu, nu, xb) = pars
-
-    if type(omega1) == np.ndarray:
-        t0 = (1.0/omega1) * np.log(mu/xb)
-        t0[t0 < 0] = 0
-    
-    else:
-
-        # threshold time
-        t0 = max([0, (1.0/omega1) * np.log(mu/xb)])
-    
-    ln_s_ = - ( (xb/(mu+nu)) * (omega2/omega1) * (np.exp(omega1*t)-np.exp(omega1*t0)) +\
-                (nu/(mu+nu)) * omega2 * (t-t0) )
-    ln_s_[t < t0] = 0                 # if x(t) < mu
-
-    return ln_s_
-"""
 
 
 #Logarithm of survival function s(t)
 def log_CDF_mod1(t, pars):
-    """
-    if type(t) == np.ndarray: # array
-        ln_s_ = log_CDF_arr_mod1(t, pars)
-    else: # float
-        ln_s_ = log_CDF_float_mod1(t, pars)
-    """
 
     # t, omega1, xb are usually arrays of the same size, but floats values are also compatible
     (omega1, omega2, mu, nu, xb) = pars
