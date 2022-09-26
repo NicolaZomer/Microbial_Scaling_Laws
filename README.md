@@ -28,13 +28,19 @@ In the folder [analysis_real_data](./analysis_real_data) it is possible to find 
 ### Growth and division processes: general model 
 In our models we consider the evolution of a single non-interacting cell, which undergoes 2 processes:
 - **growth:** the cell size $x(t)$ evolves according to the following equation
-    $$ \dot{x}=g(x(t)) \quad, \quad x(0)=x_b $$
-    In some cases this relation can be expressed in vectorial form, where $\underline{x}$ is the vector of the traits characterizing the cell's state (see model 2). 
+
+$$ \dot{x}=g(x(t)) \quad , \quad x(0)=x_b $$
+
+In some cases this relation can be expressed in vectorial form, where $\underline{x}$ is the vector of the traits characterizing the cell's state (see model 2). 
+
 - **division:** it is ruled by the _hazard rate function_ $h(x(t))$, which represents the istantaneous probability of the cell to divide. This function is related to the so called _survival function_ $s(t)$, by the relation
-    $$ \frac{\dot{s}(t)}{s(t)}=-h(t) \quad , \quad s(0)=1 $$
-    where $s(t)$ gives the probability that the cell will survive (meaning not divide in this case) past a certain time $t$.
+
+$$ \frac{\dot{s}(t)}{s(t)}=-h(t) \quad , \quad s(0)=1 $$
+
+where $s(t)$ gives the probability that the cell will survive (meaning not divide in this case) past a certain time $t$.
 
 While the growth is a deterministic process, division is a stochastic event. Since division does not always divide the cell into two equal parts, we introduce a parameter $frac$, which is treated as a stpchastic variable, such that after the division
+
 $$ \underline{x}_{div} = \left(frac\cdot x, (1-frac)x\right)) $$
 
 Finally, we assume that the division ratios $frac$ are distributed according to a Beta function and that the growth rates $\omega_1$ follow a Gamma function, hence denoting by $f$ the probability density distribution we obtain
@@ -69,7 +75,7 @@ Also in this case the processes considered are growth and division, governed by 
 
 $$
 \begin{align}
-g(x)&= \omega_1 x \\
+g(x)&= \omega_1 \cdot x \\
 h(x)&=
 \begin{cases}
     0  & , x<\mu \\
@@ -84,13 +90,14 @@ where $g(x)$ again corresponds to an exponential growth, while $h(x)$ is lower b
 **Notebook: [Model 2](./analysis_real_data/REAL_Model_2.ipynb)**
 
 The main difference between this model and the previous ones is that here we consider 2 traits: the cell size $m(t)$ and its protein content $p(t)$. We call $\underline{x}$ the vector
-$$ \underline{x} = (m, p) $$
+
+$$ \underline{x} = \binom{m}{p} $$
 
 As before, the traits evolution and the cell division are governed by $g(\underline{x})$ and $h(p)$ respectively, which are defined as 
 
 $$
 \begin{align}
-g(\underline{x})&=\omega_1m\cdot (1,c) \\
+g(\underline{x})&=\omega_1 \cdot m\cdot \binom{1}{c} \\
 h(p)&=
     \begin{cases}
     0   & , p<\mu \\
@@ -113,15 +120,20 @@ $$
 $$
 
 and the division process occurs in the following way
-$$ (m,  p) \rightarrow (frac\cdot m, 0) + ((1-frac)\cdot m, 0)$$
+
+$$ \binom{m}{p} \rightarrow \binom{frac\cdot m}{0} + \binom{(1-frac)\cdot m}{0}$$
+
 where $frac$ is the division ratio.
 
 ### Bayesian Data Analysis
 For all models, the set of parameters to be inferred is 
-$$ \underline{\theta} = \{\mu, \nu, \omega_2, a, b, c, d\} $$
 
-Applying the Bayes theorem, we can write
+$$ \underline{\theta} = \{ \mu, \nu, \omega_2, a, b, c, d \} $$
+
+Applying the Bayes theorem, we can write 
+
 $$ f(\underline{\theta}|\tau, \omega_1, frac, M) \propto f(\tau, \omega_1, frac|\underline{\theta}, M)\cdot f(\underline{\theta}, M) $$
+
 where $M$ is the background information given by the selected model and $\tau$, $\omega_1$ and $frac$ are provided by the data.
 
 Regarding the likelihood, $f(\tau, \omega_1, frac|\underline{\theta})$, applying the chain rule and exploiting the fact that $frac$ and $\omega_1$ are independent, it can be written as the product of the conditional probability density function of each random variable of interest
